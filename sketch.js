@@ -1,55 +1,33 @@
-                                                                                                                                      var ball,img,paddle;
-function preload() {
-  ballimg = loadImage('ball.png');
-  paddleimg=loadImage("paddle.png")
-}
-function setup() {
-  createCanvas(400, 400);
-  ball=createSprite(60,200,20,20);
-  ball.addImage (ballimg); 
-  ball.velocityX=9;  
-  paddle=createSprite(350,200,20,100);
-  paddle.addImage(paddleimg)
-  
+var car,wall;
+var speed,weight;
 
+function setup() {
+  createCanvas(1600,400);
+  car = createSprite(50, 200, 50, 50);
+  wall = createSprite(1500,200,60,height/2);
+  wall.shapeColor = color(80,80,80);
+  speed = random(55,100);
+  weight = random(400,2000); 
+    car.velocityX = speed;
 }
 
 function draw() {
-  background(205,153,0);
+  background(0,0,0);  
+
+if(wall.x - car.x <  wall.width/2 +  car.width/2){
+  car.velocityX = 0;
+  var deformation = 0.5 * weight * speed * speed / 22500 ;
+
+if(deformation >180){
+  car.shapeColor = color(255,0,0);
+}
+if(deformation <180 &&  deformation > 100){
+  car.shapeColor = color(230,230,0);
+}
+if(deformation < 180)
+car.shapeColor = color(0,255,0);
+}
+ 
   
-  edges=createEdgeSprites();
-  //Bounce Off the Left Edge only
-  ball.bounceOff(edges[0]); 
-  
-  ball.bounceOff(edges[2]);
-  ball.bounceOff(edges[3]);
-  
-  paddle.collide(edges);
-  
-  
-  if (ball.bounceOff(paddle))
-  {
-    explosion (); 
-  }
-  
-  
-  
-  
-  if(keyDown(UP_ARROW))
-  {
-    paddle.y= paddle.y-20;
-  }
-  
-  if(keyDown(DOWN_ARROW))
-  {
-    paddle.y = paddle.y+20;
-  }
   drawSprites();
-  
 }
-
-function explosion()
-{
-  ball.velocityY=random(-8,8);
-}
-
